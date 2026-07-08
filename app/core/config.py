@@ -6,16 +6,16 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     
     # Database
-    DATABASE_URL: str
+    DATABASE_URL: str = "sqlite:///./beach_chair.db"
     
     # Security
-    SECRET_KEY: str
+    SECRET_KEY: str = "change-me-in-production"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8  # 8 days
     
     # Admin
-    ADMIN_USERNAME: str
-    ADMIN_PASSWORD: str
+    ADMIN_USERNAME: str = "admin"
+    ADMIN_PASSWORD: str = "admin"
     
     # Email
     SMTP_TLS: bool = True
@@ -25,6 +25,9 @@ class Settings(BaseSettings):
     SMTP_PASSWORD: Optional[str] = None
     EMAILS_FROM_EMAIL: Optional[str] = None
     EMAILS_FROM_NAME: Optional[str] = None
+
+    # Frontend
+    FRONTEND_URL: Optional[str] = None
     
     # CORS
     BACKEND_CORS_ORIGINS: List[str] = ["*"]
