@@ -31,6 +31,7 @@ class Settings(BaseSettings):
 
     # Frontend
     FRONTEND_URL: Optional[str] = None
+    BACKEND_CORS_ORIGIN_REGEX: str = r"https://.*\.vercel\.app"
     
     # CORS
     BACKEND_CORS_ORIGINS: List[str] = ["*"]
