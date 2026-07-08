@@ -1,5 +1,8 @@
 from typing import Dict, List, Optional
 from app.core.config import settings
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
+import json
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -94,3 +97,24 @@ def send_email(to_email: str, subject: str, body: str):
         server.quit()
     except Exception as e:
         print(f"Failed to send email: {e}")
+
+def send_telegram_message(message: str):
+    if not all([settings.TELEGRAM_BOT_TOKEN, settings.TELEGRAM_CHAT_ID]):
+        print("Telegram skip (no config)")
+        return
+
+    url = f"https://api.telegram.org/bot{settings.TELEGRAM_BOT_TOKEN}/sendMessage"
+    payload = {
+        "chat_id": settings.TELEGRAM_CHAT_ID,
+        "text": message,
+        "parse_mode": "HTML",
+        "disable_web_page_preview": True,
+    }
+
+    try:
+        data = urlencode(payload).encode("utf-8")
+        request = Request(url, data=data, method="POST")
+        with urlopen(request, timeout=10) as response:
+            response.read()
+    except Exception as e:
+        print(f"Failed to send Telegram message: {e}")

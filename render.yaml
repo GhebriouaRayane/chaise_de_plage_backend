@@ -25,3 +25,9 @@ services:
         value: ""
       - key: EMAILS_FROM_NAME
         value: "Beach Chair Shop"
+      - key: ADMIN_EMAIL
+        value: "rayaneghebrioua10@gmail.com"
+      - key: TELEGRAM_BOT_TOKEN
+        value: ""
+      - key: TELEGRAM_CHAT_ID
+        value: ""

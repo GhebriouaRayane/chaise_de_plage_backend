@@ -5,7 +5,7 @@ from app.crud import crud
 from app.schemas import schemas
 from app.db.session import get_db
 from app.api.v1.endpoints.auth import get_current_user
-from app.services.business import send_email
+from app.services.business import send_email, send_telegram_message
 from app.core.config import settings
 
 router = APIRouter()
@@ -25,7 +25,22 @@ def notify_order(order: schemas.Order):
     <p><b>Date:</b> {order.created_at}</p>
     <p><b>Remarque:</b> {order.remarque or 'Aucune'}</p>
     """
-    send_email(settings.EMAILS_FROM_EMAIL, f"Nouvelle Commande {order.order_number}", admin_body)
+    admin_email = settings.ADMIN_EMAIL or settings.EMAILS_FROM_EMAIL
+    if admin_email:
+        send_email(admin_email, f"Nouvelle Commande {order.order_number}", admin_body)
+
+    telegram_message = (
+        f"Nouvelle commande {order.order_number}\n"
+        f"Client: {order.nom} {order.prenom}\n"
+        f"Téléphone: {order.telephone}\n"
+        f"Wilaya: {order.wilaya_name} ({order.wilaya_code})\n"
+        f"Commune: {order.commune}\n"
+        f"Produit: {order.product_name}\n"
+        f"Quantité: {order.quantity}\n"
+        f"Total: {order.total_price} DA\n"
+        f"Remarque: {order.remarque or 'Aucune'}"
+    )
+    send_telegram_message(telegram_message)
     
     # Email to Client
     if order.email:
