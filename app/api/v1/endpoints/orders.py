@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from app.crud import crud
@@ -50,11 +50,11 @@ def notify_order(order: schemas.Order):
         send_email(order.email, f"Confirmation de commande {order.order_number}", client_body)
 
 @router.post("/", response_model=schemas.Order)
-def create_order(order: schemas.OrderCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+def create_order(order: schemas.OrderCreate, db: Session = Depends(get_db)):
     try:
         db_order = crud.create_order(db, order)
         order_schema = schemas.Order.model_validate(db_order)
-        background_tasks.add_task(notify_order, order_schema)
+        notify_order(order_schema)
         return db_order
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

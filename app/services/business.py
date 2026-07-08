@@ -2,7 +2,6 @@ from typing import Dict, List, Optional
 from app.core.config import settings
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
-import json
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -107,7 +106,6 @@ def send_telegram_message(message: str):
     payload = {
         "chat_id": settings.TELEGRAM_CHAT_ID,
         "text": message,
-        "parse_mode": "HTML",
         "disable_web_page_preview": True,
     }
 
@@ -115,6 +113,7 @@ def send_telegram_message(message: str):
         data = urlencode(payload).encode("utf-8")
         request = Request(url, data=data, method="POST")
         with urlopen(request, timeout=10) as response:
-            response.read()
+            body = response.read().decode("utf-8", errors="replace")
+            print(f"Telegram response: {body}")
     except Exception as e:
         print(f"Failed to send Telegram message: {e}")
