@@ -14,20 +14,20 @@ services:
       - key: ADMIN_PASSWORD
         value: admin
       - key: SMTP_HOST
-        value: ""
+        sync: false
       - key: SMTP_PORT
         value: 587
       - key: SMTP_USER
-        value: ""
+        sync: false
       - key: SMTP_PASSWORD
-        value: ""
+        sync: false
       - key: EMAILS_FROM_EMAIL
-        value: ""
+        sync: false
       - key: EMAILS_FROM_NAME
         value: "Beach Chair Shop"
       - key: ADMIN_EMAIL
         value: "rayaneghebrioua10@gmail.com"
       - key: TELEGRAM_BOT_TOKEN
-        value: ""
+        sync: false
       - key: TELEGRAM_CHAT_ID
-        value: ""
+        sync: false
