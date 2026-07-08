@@ -25,10 +25,6 @@ def notify_order(order: schemas.Order):
     <p><b>Date:</b> {order.created_at}</p>
     <p><b>Remarque:</b> {order.remarque or 'Aucune'}</p>
     """
-    admin_email = settings.ADMIN_EMAIL or settings.EMAILS_FROM_EMAIL
-    if admin_email:
-        send_email(admin_email, f"Nouvelle Commande {order.order_number}", admin_body)
-
     telegram_message = (
         f"Nouvelle commande {order.order_number}\n"
         f"Client: {order.nom} {order.prenom}\n"
